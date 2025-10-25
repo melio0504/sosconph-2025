@@ -1,0 +1,10 @@
+node_modules
+*.log
+dist/
+out/
+coverage/
+.env
+.git
+.gitignore
+.dockerignore
+Dockerfile

@@ -1,0 +1,35 @@
+name: docker-compose-demo-part-2
+
+services:
+
+  base-nodejs:
+    image: base-nodejs:soscon
+    build:
+      context: base-nodejs
+    entrypoint: [ "true" ]
+
+  base-expressjs:
+    image: base-expressjs:soscon
+    build:
+      context: base-expressjs
+      additional_contexts:
+        base-nodejs: "service:base-nodejs"
+    entrypoint: [ "true" ]
+
+  show-hostname:
+    image: show-hostname:soscon
+    build:
+      context: show-hostname
+      additional_contexts:
+        base-expressjs: "service:base-expressjs"
+    ports:
+      - 3000:3000
+
+  show-client-ip:
+    image: show-client-ip:soscon
+    build:
+      context: show-client-ip
+      additional_contexts:
+        base-expressjs: "service:base-expressjs"
+    ports:
+      - 3001:3000
