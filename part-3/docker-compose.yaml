@@ -1,0 +1,29 @@
+name: docker-compose-demo-part-3
+
+x-common: &common
+  restart: always
+
+x-scaled: &scaled
+  <<: *common
+  scale: 1
+
+services:
+
+  haproxy:
+    <<: *common
+    image: haproxy:soscon
+    build:
+      context: haproxy
+    ports:
+      - ${HOSTNAME_PORT:-9000}:3000
+      - ${CLIENT_IP_PORT:-9001}:3000
+    volumes:
+      - ./haproxy/haproxy.cfg:/haproxy.cfg
+
+  show-hostname:
+    <<: *scaled
+    image: show-hostname:soscon
+
+  show-client-ip:
+    <<: *scaled
+    image: show-client-ip:soscon
